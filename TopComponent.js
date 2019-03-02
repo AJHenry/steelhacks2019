@@ -43,7 +43,13 @@ export class TopComponent extends React.Component {
 
   render() {
     const { fadeAnim } = this.state;
-    const { isVisible, recycleText, recyclable } = this.props;
+    const {
+      isVisible,
+      recycleText,
+      recyclable,
+      compostable,
+      special
+    } = this.props;
     const width = Dimensions.get("window").width;
     if (isVisible) {
       this._toggleSubview(0);
@@ -63,17 +69,24 @@ export class TopComponent extends React.Component {
             height: height,
             position: "absolute",
             top: 0,
-            width: "100%"
+            width: "100%",
+            zIndex: 1000
           },
           {
             transform: [{ translateY: fadeAnim }]
           },
-          recyclable ? styles.success : styles.failure
+          recyclable
+            ? styles.recyclable
+            : compostable
+            ? styles.compost
+            : special
+            ? styles.special
+            : styles.nonrecyclable
         ]}
       >
         <View style={{ flexDirection: "row", padding: 10 }}>
           <Text style={{ fontSize: 24, fontWeight: "900", color: "#fff" }}>
-            {recycleText ? recycleText : "Banana"}
+            {recycleText ? recycleText.charAt(0).toUpperCase() + recycleText.slice(1) : "Banana"}
           </Text>
         </View>
       </Animated.View>
@@ -82,10 +95,16 @@ export class TopComponent extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  success: {
+  recyclable: {
     backgroundColor: "#4BB543"
   },
-  failure: {
+  nonrecyclable: {
     backgroundColor: "#ff0033"
+  },
+  special: {
+    backgroundColor: "#2E5894"
+  },
+  compost: {
+    backgroundColor: "#DEA681"
   }
 });
