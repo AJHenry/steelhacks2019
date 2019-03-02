@@ -1,5 +1,4 @@
-# steelhacks2019
-
+# Cycler - steelhacks2019
 ## Set up
 
 ```
