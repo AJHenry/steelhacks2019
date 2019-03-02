@@ -63,13 +63,13 @@ export class BottomComponent extends React.Component {
 
     middleView = (width, type) => {
         const fontSize = 20;
-        const pV = 10;
+        const pV = 5;
         if (type === 'RECYCLE' || type === 'COMPOST' || type === 'GARBAGE') {
             const innerText = type === 'RECYCLE' ? 'This item can be placed in any designated recycling bin. Make sure there are no food or liquid on or in the item.' :
                 type === 'COMPOST' ? 'This item can be placed in any designated composting area.' : 'This item cannot be recycled or composted. Please disgard in bin that will go to a landfill.'
             return (
-                <View style={{ paddingHorizontal: 10 }}>
-                    <Text style={{ fontSize: fontSize, color: "#fff", paddingVertical: pV, textAlign: 'center' }}>
+                <View style={{ marginTop:-10, paddingHorizontal: 10, justifyContent:'center'}}>
+                    <Text style={{ fontSize: fontSize, color: "#fff", textAlign: 'center' }}>
                         {innerText}
                     </Text>
                 </View>
@@ -213,7 +213,7 @@ export class BottomComponent extends React.Component {
                             width: "100%",
                             justifyContent: "center",
                             alignItems: "center",
-                            paddingBottom: 10
+                            
                         }}
                     >
                         {this.middleView(width,
