@@ -10,7 +10,7 @@ export default class App extends React.Component {
     state = {
         hasCameraPermission: null,
         type: Camera.Constants.Type.back,
-        isShowing: true
+        isShowing: false
     };
 
     async componentDidMount() {
@@ -46,7 +46,8 @@ export default class App extends React.Component {
 
     snap = async () => {
         if (this.camera) {
-            // let photo = await this.camera.takePictureAsync();
+            this.camera.pausePreview();
+
             const photo = await this.camera.takePictureAsync({
                 base64: true,
             });
@@ -59,6 +60,7 @@ export default class App extends React.Component {
                 recyclable: result.type === 'RECYCLE' ? true : false,
                 text: result.items[0]
             });
+            
         }
     }
 
@@ -103,30 +105,33 @@ export default class App extends React.Component {
         } else {
             return (
                 <View style={{ flex: 1 }}>
-                    <View
-                        style={{
-                            flex: 1,
-                            backgroundColor: "#000",
-                            flexDirection: "column"
-                        }}
-                    >
-                        <TopComponent
-                            isVisible={isShowing}
-                            recycleText={text}
-                            recyclable={recyclable}
-                        />
-                        <TouchableOpacity
+                    <Camera style={{ flex: 1 }} type={this.state.type} ref={ref => { this.camera = ref; }}>
+                        <View
                             style={{
                                 flex: 1,
-                                alignItems: "center"
+                                backgroundColor: "#000",
+                                flexDirection: "column"
                             }}
-                            onPress={() => {
-                                this.setState({ isShowing: !isShowing });
-                                this.snap();
-                            }}
-                        />
-                        <BottomComponent isVisible={isShowing} recyclable={recyclable} />
-                    </View>
+                        >
+                            <TopComponent
+                                isVisible={isShowing}
+                                recycleText={text}
+                                recyclable={recyclable}
+                            />
+                            <TouchableOpacity
+                                style={{
+                                    flex: 1,
+                                    alignItems: "center"
+                                }}
+                                onPress={() => {
+                                    // this.setState({ isShowing: !isShowing });
+                                    if (isShowing) this.snap();
+                                    else this.camera.resumePreview();
+                                }}
+                            />
+                            <BottomComponent isVisible={isShowing} recyclable={recyclable} />
+                        </View>
+                    </Camera>
                 </View>
             );
         }
