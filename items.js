@@ -59,6 +59,7 @@ export default {
         'battery',
         'computer',
         'electronics',
+        'electronic',
         'bulb',
         'microfilm',
         'cell phone',

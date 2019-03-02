@@ -90,7 +90,7 @@ export class BottomComponent extends React.Component {
                 >
                     {this.renderSites()}
                 </MapView>
-                <Text style={{ fontSize: 12, color: "#fff", paddingVertical: 5 }}>
+                <Text style={{ fontSize: 12, color: "#fff", paddingVertical: 5, paddingBottom: 10 }}>
                     These are specialized recycling centers
             </Text>
             </>
@@ -213,7 +213,7 @@ export class BottomComponent extends React.Component {
                             width: "100%",
                             justifyContent: "center",
                             alignItems: "center",
-                            
+                            paddingBottom: 10
                         }}
                     >
                         {this.middleView(width,
