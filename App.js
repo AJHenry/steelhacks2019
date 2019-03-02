@@ -180,12 +180,13 @@ export default class App extends React.Component {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "rgba(255, 78, 78, 0.78)"
+        backgroundColor: "rgba(0, 0, 0, 0.78)"
       }}>
         <Text style={{
           fontSize: 32,
+          fontWeight: "bold",
           color: "white",
-          marginBottom: 10
+          marginBottom: 20
         }}>Analyzing Image</Text>
         <ActivityIndicator size="large" color="white"></ActivityIndicator>
       </View>
