@@ -8,7 +8,7 @@ import {
     StyleSheet
 } from "react-native";
 import { MapView } from "expo";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import MARKERS from './markers';
 
 const height = 70;
@@ -61,6 +61,42 @@ export class BottomComponent extends React.Component {
         return renderedSites;
     };
 
+    middleView = (width, type) => {
+        const fontSize = 20;
+        const pV = 10;
+        if (type === 'RECYCLE' || type === 'COMPOST' || type === 'GARBAGE') {
+            const innerText = type === 'RECYCLE' ? 'This item can be placed in any designated recycling bin. Make sure there are no food or liquid on or in the item.' :
+                type === 'COMPOST' ? 'This item can be placed in any designated composting area.' : 'This item cannot be recycled or composted. Please disgard in bin that will go to a landfill.'
+            return (
+                <View style={{ paddingHorizontal: 10 }}>
+                    <Text style={{ fontSize: fontSize, color: "#fff", paddingVertical: pV, textAlign: 'center' }}>
+                        {innerText}
+                    </Text>
+                </View>
+
+            );
+        }
+
+        return (
+            <>
+                <MapView
+                    style={{ flex: 1, width }}
+                    initialRegion={{
+                        latitude: 40.4406,
+                        longitude: -79.9959,
+                        latitudeDelta: 0.18,
+                        longitudeDelta: 0.0842
+                    }}
+                >
+                    {this.renderSites()}
+                </MapView>
+                <Text style={{ fontSize: 12, color: "#fff", paddingVertical: 5 }}>
+                    These are specialized recycling centers
+            </Text>
+            </>
+        );
+    }
+
     render() {
         const { fadeAnim, extended } = this.state;
         const {
@@ -68,7 +104,8 @@ export class BottomComponent extends React.Component {
             recyclable,
             recycleType,
             compostable,
-            special
+            special,
+            givenHeight
         } = this.props;
         const width = Dimensions.get("window").width;
         if (isVisible) {
@@ -86,9 +123,9 @@ export class BottomComponent extends React.Component {
                         alignItems: "center",
                         backgroundColor: "#fff",
                         justifyContent: "center",
-                        height: 400 + height,
+                        height: givenHeight + height,
                         position: "absolute",
-                        bottom: -400,
+                        bottom: -givenHeight,
                         width: "100%",
                         zIndex: 1000
                     },
@@ -117,7 +154,7 @@ export class BottomComponent extends React.Component {
                                 );
                             } else {
                                 this.setState({ extended: true }, () =>
-                                    this._toggleSubview(-400)
+                                    this._toggleSubview(-givenHeight)
                                 );
                             }
                         }}
@@ -130,15 +167,35 @@ export class BottomComponent extends React.Component {
                                 justifyContent: "center"
                             }}
                         >
-                            <Text style={{ fontSize: 24, fontWeight: "900", color: "#fff" }}>
-                                {recyclable
-                                    ? "Recyclable"
-                                    : compostable
-                                        ? "Compostable"
-                                        : special
-                                            ? "Special"
-                                            : "Non-recyclable"}
-                            </Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <FontAwesome name={
+                                    recyclable
+                                        ? "recycle"
+                                        : compostable
+                                            ? "leaf"
+                                            : special
+                                                ? "bolt"
+                                                : "trash-o"
+                                } size={24} style={{ color: 'white', paddingHorizontal: 10 }} ></FontAwesome>
+                                <Text style={{ fontSize: 24, fontWeight: "900", color: "#fff" }}>
+                                    {recyclable
+                                        ? "Recyclable"
+                                        : compostable
+                                            ? "Compostable"
+                                            : special
+                                                ? "Special"
+                                                : "Non-recyclable"}
+                                </Text>
+                                <FontAwesome name={
+                                    recyclable
+                                        ? "recycle"
+                                        : compostable
+                                            ? "leaf"
+                                            : special
+                                                ? "bolt"
+                                                : "trash-o"
+                                } size={24} style={{ color: 'white', paddingHorizontal: 10 }} ></FontAwesome>
+                            </View>
                             {!extended ? (
                                 <Text style={{ fontSize: 12, color: "#dcdcdc" }}>
                                     Press for more details
@@ -152,30 +209,21 @@ export class BottomComponent extends React.Component {
                     </TouchableOpacity>
                     <View
                         style={{
-                            height: 400,
+                            height: givenHeight,
                             width: "100%",
                             justifyContent: "center",
                             alignItems: "center",
                             paddingBottom: 10
                         }}
                     >
-                        <MapView
-                            style={{ flex: 1, width }}
-                            initialRegion={{
-                                latitude: 40.4406,
-                                longitude: -79.9959,
-                                latitudeDelta: 0.18,
-                                longitudeDelta: 0.0842
-                            }}
-                        >
-
-                            {this.renderSites()}
-                           
-
-                        </MapView>
-                        <Text style={{ fontSize: 12, color: "#fff", paddingVertical: 5 }}>
-                            These are specialized recycling centers
-            </Text>
+                        {this.middleView(width,
+                            recyclable
+                                ? 'RECYCLE'
+                                : compostable
+                                    ? 'COMPOST'
+                                    : special
+                                        ? 'SPECIAL'
+                                        : 'GARBAGE')}
                     </View>
                 </View>
             </Animated.View>
