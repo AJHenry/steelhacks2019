@@ -170,8 +170,6 @@ export default class App extends React.Component {
     } else if (hasCameraPermission === false) {
       return <Text>No access to camera</Text>;
     } else if (imageUri) {
-      console.log(imageUri);
-      console.log("is analyzing:", isAnalyzingPhoto);
       let loadingComponent = (
       <View style={{
         position: "absolute",
