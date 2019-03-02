@@ -68,9 +68,33 @@ export default class App extends React.Component {
 
   getType = async matches => {
     const lowered = matches.map(m => m.description.toLowerCase());
-    const recycle = lowered.filter(l => ITEMS["RECYCLE"].includes(l));
-    const compost = lowered.filter(l => ITEMS["COMPOST"].includes(l));
-    const special = lowered.filter(l => ITEMS["SPECIAL"].includes(l));
+    const recycle = lowered.filter(l => {
+        const words = l.split(' ');
+        for (word of words) {
+            if (ITEMS["RECYCLE"].includes(word)) {
+                return true
+            }
+        }
+        return false;
+    });
+    const compost = lowered.filter(l => {
+        const words = l.split(' ');
+        for (word of words) {
+            if (ITEMS["COMPOST"].includes(word)) {
+                return true
+            }
+        }
+        return false;
+    });
+    const special = lowered.filter(l => {
+        const words = l.split(' ');
+        for (word of words) {
+            if (ITEMS["SPECIAL"].includes(word)) {
+                return true
+            }
+        }
+        return false;
+    });
 
     if (recycle.length > 0)
       return {
