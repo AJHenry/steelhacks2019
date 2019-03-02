@@ -62,6 +62,7 @@ export default class App extends React.Component {
       });
 
       this.setState({
+        isAnalyzingPhoto: true,
         imageUri: photo.uri
       });
 
@@ -69,7 +70,9 @@ export default class App extends React.Component {
       matches = await matches.json();
       const result = await this.getType(matches.responses[0].labelAnnotations);
       this.setState({
+        isAnalyzingPhoto: false,
         isShowing: true,
+        loadingGoogle: false,
         recyclable: result.type === "RECYCLE",
         compostable: result.type === "COMPOST",
         special: result.type === "SPECIAL",
@@ -151,6 +154,7 @@ export default class App extends React.Component {
       text,
       imageUri,
       compostable,
+      isAnalyzingPhoto,
       special
     } = this.state;
     if (hasCameraPermission === null) {
@@ -164,6 +168,28 @@ export default class App extends React.Component {
       return <Text>No access to camera</Text>;
     } else if (imageUri) {
       console.log(imageUri);
+      console.log("is analyzing:", isAnalyzingPhoto);
+      let loadingComponent = (
+      <View style={{
+        position: "absolute",
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 10000,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(255, 78, 78, 0.78)"
+      }}>
+        <Text style={{
+          fontSize: 32,
+          color: "white",
+          marginBottom: 10
+        }}>Analyzing Image</Text>
+        <ActivityIndicator size="large" color="white"></ActivityIndicator>
+      </View>
+      )
       return (
         <View style={{ flex: 1 }}>
           <View
@@ -190,6 +216,7 @@ export default class App extends React.Component {
                 this.setState({ imageUri: null, isShowing: false });
               }}
             >
+              { isAnalyzingPhoto ? loadingComponent : null}
               <Image style={{ width, height }} source={{ uri: imageUri }} />
             </TouchableOpacity>
             <BottomComponent
