@@ -57,12 +57,15 @@ export default class App extends React.Component {
 
   snap = async () => {
     if (this.camera) {
+      this.setState({
+        isAnalyzingPhoto: true,
+      });
+
       const photo = await this.camera.takePictureAsync({
         base64: true
       });
 
       this.setState({
-        isAnalyzingPhoto: true,
         imageUri: photo.uri
       });
 
