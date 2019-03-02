@@ -6,12 +6,13 @@ import {
   ActivityIndicator,
   Animated,
   Dimensions,
-  StyleSheet
+  StyleSheet,
+  ScrollView
 } from "react-native";
-import { Camera, Permissions } from "expo";
+import { Camera, Permissions, MapView } from "expo";
 import { Ionicons } from "@expo/vector-icons";
 
-const height = 60;
+const height = 70;
 
 export class BottomComponent extends React.Component {
   constructor(props) {
@@ -68,9 +69,9 @@ export class BottomComponent extends React.Component {
             alignItems: "center",
             backgroundColor: "#fff",
             justifyContent: "center",
-            height: 260,
+            height: 400 + height,
             position: "absolute",
-            bottom: -200,
+            bottom: -400,
             width: "100%",
             zIndex: 1000
           },
@@ -84,19 +85,34 @@ export class BottomComponent extends React.Component {
             : styles.nonrecyclable
         ]}
       >
-        <TouchableOpacity
-          onPress={() => {
-            if (extended) {
-              this.setState({ extended: false }, () => this._toggleSubview(0));
-            } else {
-              this.setState({ extended: true }, () =>
-                this._toggleSubview(-200)
-              );
-            }
+        <View
+          style={{
+            flexDirection: "column",
+            alignItems: "center",
+            width: "100%"
           }}
         >
-          <View style={{ flexDirection: "column", alignItems: "center" }}>
-            <View style={{ paddingVertical: 18, flexDirection: "column", alignItems: "center" }}>
+          <TouchableOpacity
+            onPress={() => {
+              if (extended) {
+                this.setState({ extended: false }, () =>
+                  this._toggleSubview(0)
+                );
+              } else {
+                this.setState({ extended: true }, () =>
+                  this._toggleSubview(-400)
+                );
+              }
+            }}
+          >
+            <View
+              style={{
+                paddingVertical: 18,
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >
               <Text style={{ fontSize: 24, fontWeight: "900", color: "#fff" }}>
                 {recyclable
                   ? "Recyclable"
@@ -106,13 +122,40 @@ export class BottomComponent extends React.Component {
                   ? "Special"
                   : "Non-recyclable"}
               </Text>
-              {!extended ? <Text style={{ fontSize: 12, color: "#dcdcdc" }}>Press for more details</Text> : null}
+              {!extended ? (
+                <Text style={{ fontSize: 12, color: "#dcdcdc" }}>
+                  Press for more details
+                </Text>
+              ) : (
+                <Text style={{ fontSize: 12, color: "#dcdcdc" }}>
+                  Press to close
+                </Text>
+              )}
             </View>
-            <View style={{ height: 200 }}>
-              <Text>This is the bottom container</Text>
-            </View>
+          </TouchableOpacity>
+          <View
+            style={{
+              height: 400,
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+              paddingBottom: 10
+            }}
+          >
+            <MapView
+              style={{ flex: 1, width }}
+              initialRegion={{
+                latitude: 37.78825,
+                longitude: -122.4324,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421
+              }}
+            />
+            <Text style={{ fontSize: 12, color: "#fff", paddingVertical: 5 }}>
+              These are specialized recycling centers
+            </Text>
           </View>
-        </TouchableOpacity>
+        </View>
       </Animated.View>
     );
   }

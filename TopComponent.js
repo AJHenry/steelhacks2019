@@ -86,7 +86,7 @@ export class TopComponent extends React.Component {
       >
         <View style={{ flexDirection: "row", padding: 10 }}>
           <Text style={{ fontSize: 24, fontWeight: "900", color: "#fff" }}>
-            {recycleText ? recycleText : "Banana"}
+            {recycleText ? recycleText.charAt(0).toUpperCase() + recycleText.slice(1) : "Banana"}
           </Text>
         </View>
       </Animated.View>
