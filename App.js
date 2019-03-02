@@ -1,11 +1,14 @@
 import React from "react";
 import { Text, View, TouchableOpacity, ActivityIndicator } from "react-native";
 import { Camera, Permissions } from "expo";
+import { BottomComponent } from "./BottomComponent";
+import { TopComponent } from "./TopComponent";
 
 export default class App extends React.Component {
   state = {
     hasCameraPermission: null,
-    type: Camera.Constants.Type.back
+    type: Camera.Constants.Type.back,
+    isShowing: true
   };
 
   async componentDidMount() {
@@ -14,11 +17,12 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { hasCameraPermission } = this.state;
+    const { hasCameraPermission, isShowing } = this.state;
     if (hasCameraPermission === null) {
       return (
-        <View style={{ flex: 1 }}>
-          <ActivityIndicator />
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          <ActivityIndicator size="large" />
+          <Text>Loading cycler</Text>
         </View>
       );
     } else if (hasCameraPermission === false) {
@@ -26,29 +30,30 @@ export default class App extends React.Component {
     } else {
       return (
         <View style={{ flex: 1 }}>
-          <Camera style={{ flex: 1 }} type={this.state.type}>
-            <View
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: "#000",
+              flexDirection: "column"
+            }}
+          >
+            <TopComponent
+              isVisible={isShowing}
+              recycleText="Fruit"
+              recyclable
+            />
+            <TouchableOpacity
               style={{
                 flex: 1,
-                backgroundColor: "transparent",
-                flexDirection: "column"
+                alignItems: "center"
               }}
-            >
-              <View />
-              <TouchableOpacity
-                style={{
-                  flex: 1,
-                  alignItems: "center"
-                }}
-                onPress={() => {
-                  console.log("Pressed");
-                }}
-              />
-              <View style={{height: 100, backgroundColor: '#fff'}}>
-                <Text>Bottom Bar</Text>
-              </View>
-            </View>
-          </Camera>
+              onPress={() => {
+                console.log("Pressed");
+                this.setState({ isShowing: !isShowing });
+              }}
+            />
+            <BottomComponent isVisible={isShowing} recyclable />
+          </View>
         </View>
       );
     }
