@@ -18,7 +18,8 @@ export class BottomComponent extends React.Component {
     super(props);
     const width = Dimensions.get("window").width;
     this.state = {
-      fadeAnim: new Animated.Value(height)
+      fadeAnim: new Animated.Value(height),
+      extended: false
     };
   }
 
@@ -43,8 +44,14 @@ export class BottomComponent extends React.Component {
   };
 
   render() {
-    const { fadeAnim } = this.state;
-    const { isVisible, recyclable, recycleType } = this.props;
+    const { fadeAnim, extended } = this.state;
+    const {
+      isVisible,
+      recyclable,
+      recycleType,
+      compostable,
+      special
+    } = this.props;
     const width = Dimensions.get("window").width;
     if (isVisible) {
       this._toggleSubview(0);
@@ -61,24 +68,51 @@ export class BottomComponent extends React.Component {
             alignItems: "center",
             backgroundColor: "#fff",
             justifyContent: "center",
-            height: height,
+            height: 260,
             position: "absolute",
-            bottom: 0,
-            width: "100%"
+            bottom: -200,
+            width: "100%",
+            zIndex: 1000
           },
           { transform: [{ translateY: fadeAnim }] },
-          recyclable ? styles.recyclable : styles.nonrecyclable
+          recyclable
+            ? styles.recyclable
+            : compostable
+            ? styles.compost
+            : special
+            ? styles.special
+            : styles.nonrecyclable
         ]}
       >
-        <View style={{ flexDirection: "row" }}>
-          <Text style={{ fontSize: 24, fontWeight: "900", color: "#fff" }}>
-            {recycleType
-              ? recycleType
-              : recyclable
-              ? "Recyclable"
-              : "Non-recyclable"}
-          </Text>
-        </View>
+        <TouchableOpacity
+          onPress={() => {
+            if (extended) {
+              this.setState({ extended: false }, () => this._toggleSubview(0));
+            } else {
+              this.setState({ extended: true }, () =>
+                this._toggleSubview(-200)
+              );
+            }
+          }}
+        >
+          <View style={{ flexDirection: "column", alignItems: "center" }}>
+            <View style={{ paddingVertical: 18, flexDirection: "column", alignItems: "center" }}>
+              <Text style={{ fontSize: 24, fontWeight: "900", color: "#fff" }}>
+                {recyclable
+                  ? "Recyclable"
+                  : compostable
+                  ? "Compostable"
+                  : special
+                  ? "Special"
+                  : "Non-recyclable"}
+              </Text>
+              {!extended ? <Text style={{ fontSize: 12, color: "#dcdcdc" }}>Press for more details</Text> : null}
+            </View>
+            <View style={{ height: 200 }}>
+              <Text>This is the bottom container</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
       </Animated.View>
     );
   }
@@ -90,5 +124,11 @@ const styles = StyleSheet.create({
   },
   nonrecyclable: {
     backgroundColor: "#ff0033"
+  },
+  special: {
+    backgroundColor: "#2E5894"
+  },
+  compost: {
+    backgroundColor: "#DEA681"
   }
 });
