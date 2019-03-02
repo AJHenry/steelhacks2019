@@ -1,44 +1,65 @@
 export default [
     {
-        latitude: 40.429330,
-        longitude: -79.993650,
+        id: 0,
+        coordinate: {
+            longitude: -79.993650,
+            latitude: 40.429330
+        },
         title: 'Appliance Warehouse',
-        subtitle: '20 S 6th St Rear, Pittsburgh, PA 15203'
+        description: '20 S 6th St Rear, Pittsburgh, PA 15203'
     },
     {
-        latitude: 40.425910,
-        longitude: -79.973580,
+        id: 1,
+        coordinate: {
+            longitude: -79.973580,
+            latitude: 40.425910
+        },
         title: 'Evolution E-Cycling LLC',
-        subtitle: '2235 Mary St. Pittsburgh, PA 15203'
+        description: '2235 Mary St. Pittsburgh, PA 15203'
     },
     {
-        latitude: 40.418930,
-        longitude: -79.606520,
+        id: 2,
+        coordinate: {
+            longitude: -79.606520,
+            latitude: 40.418930
+        },
         title: 'eLoop LLC Regional Recycling Center',
-        subtitle: '2010 Borland Farm Rd, Export, PA'
+        description: '2010 Borland Farm Rd, Export, PA'
     },
     {
-        latitude: 41.505170,
-        longitude: -80.188640,
+        id: 3,
+        coordinate: {
+            longitude: -80.188640,
+            latitude: 41.505170
+        },
         title: 'ECS&R',
-        subtitle: '3237 US Highway 19, Cochranton, PA'
+        description: '3237 US Highway 19, Cochranton, PA'
     },
     {
-        latitude: 40.412740,
-        longitude: -79.903480,
+        id: 4,
+        coordinate: {
+            longitude: -79.903480,
+            latitude: 40.412740
+        },
         title: 'Best Buy',
-        subtitle: '680 Waterfront Drive, E Munhall, PA 15120'
+        description: '680 Waterfront Drive, E Munhall, PA 15120'
     },
     {
-        latitude: 40.523770,
-        longitude: -80.006570,
+        id: 5,
+        coordinate: {
+            longitude: -80.006570,
+            latitude: 40.523770
+        },
         title: 'Best Buy',
-        subtitle: '4801 McKnight Rd, Pittsburgh, PA'
+        description: '4801 McKnight Rd, Pittsburgh, PA'
     },
     {
-        latitude: 40.346410,
-        longitude: -80.044950,
+        id: 6,
+        coordinate: {
+            longitude: -80.044950,
+            latitude: 40.346410
+        },
         title: 'Best Buy',
-        subtitle: '5000 Alicia Drive, Bethel Park, PA'
+        description: '5000 Alicia Drive, Bethel Park, PA'
     }
 ]
