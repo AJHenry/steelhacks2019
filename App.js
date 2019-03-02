@@ -1,13 +1,16 @@
 import React from "react";
 import { Text, View, TouchableOpacity, ActivityIndicator } from "react-native";
 import { Camera, Permissions } from "expo";
-import Environment from "./environment.config";
-import ITEMS from "./items";
+import { BottomComponent } from "./BottomComponent";
+import { TopComponent } from "./TopComponent";
+import Environment from './environment.config';
+import ITEMS from './items';
 
 export default class App extends React.Component {
     state = {
         hasCameraPermission: null,
-        type: Camera.Constants.Type.back
+        type: Camera.Constants.Type.back,
+        isShowing: true
     };
 
     async componentDidMount() {
@@ -51,7 +54,11 @@ export default class App extends React.Component {
             let matches = await this.getMatches(photo.base64, 10);
             matches = await matches.json();
             const result = await this.getType(matches.responses[0].labelAnnotations);
-            console.log(result);
+            this.setState({
+                isShowing: true,
+                recyclable: result.type === 'RECYCLE' ? true : false,
+                text: result.items[0]
+            });
         }
     }
 
@@ -83,11 +90,12 @@ export default class App extends React.Component {
     }
 
     render() {
-        const { hasCameraPermission } = this.state;
+        const { hasCameraPermission, isShowing, recyclable, text } = this.state;
         if (hasCameraPermission === null) {
             return (
-                <View style={{ flex: 1 }}>
-                    <ActivityIndicator />
+                <View style={{ flex: 1, justifyContent: "center" }}>
+                    <ActivityIndicator size="large" />
+                    <Text>Loading cycler</Text>
                 </View>
             );
         } else if (hasCameraPermission === false) {
@@ -95,29 +103,30 @@ export default class App extends React.Component {
         } else {
             return (
                 <View style={{ flex: 1 }}>
-                    <Camera style={{ flex: 1 }} type={this.state.type} ref={ref => { this.camera = ref; }} >
-                        <View
+                    <View
+                        style={{
+                            flex: 1,
+                            backgroundColor: "#000",
+                            flexDirection: "column"
+                        }}
+                    >
+                        <TopComponent
+                            isVisible={isShowing}
+                            recycleText={text}
+                            recyclable={recyclable}
+                        />
+                        <TouchableOpacity
                             style={{
                                 flex: 1,
-                                backgroundColor: "transparent",
-                                flexDirection: "column"
+                                alignItems: "center"
                             }}
-                        >
-                            <View />
-                            <TouchableOpacity
-                                style={{
-                                    flex: 1,
-                                    alignItems: "center"
-                                }}
-                                onPress={() => {
-                                    this.snap()
-                                }}
-                            />
-                            <View style={{ height: 100, backgroundColor: '#fff' }}>
-                                <Text>Bottom Bar</Text>
-                            </View>
-                        </View>
-                    </Camera>
+                            onPress={() => {
+                                this.setState({ isShowing: !isShowing });
+                                this.snap();
+                            }}
+                        />
+                        <BottomComponent isVisible={isShowing} recyclable={recyclable} />
+                    </View>
                 </View>
             );
         }
