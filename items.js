@@ -80,6 +80,7 @@ export default {
     ],
 
     'COMPOST': [
+        'food',
         'fruit',
         'vegetable',
         'apple',
