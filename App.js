@@ -197,7 +197,7 @@ export default class App extends React.Component {
               recyclable={recyclable}
               compostable={compostable}
               special={special}
-              givenHeight={special ? 400 : 150}
+              givenHeight={special ? 400 : 100}
             />
           </View>
         </View>
